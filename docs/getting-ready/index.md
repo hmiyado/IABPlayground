@@ -70,13 +70,43 @@ Android Manifest に `com.android.vending.BILLING` が必要。
 Google Play Console の 収益化 > 商品 > アプリ内サービスを表示する。
 右上あたりのメニューから「アイテムを作成」を押下する。
 
-![アイテムを作成](./create-billing-item-1.png)
+![アイテムを作成1](./create-billing-item-1.png)
 
 それから必要な項目を埋める。
 
-![アイテムを作成1](./create-billing-item-2.png)
-![アイテムを作成2](./create-billing-item-3.png)
+![アイテムを作成2](./create-billing-item-2.png)
+![アイテムを作成3](./create-billing-item-3.png)
 
 作成後、リストに反映される。
 
-![アイテムを作成後](./create-billing-item-4.png)
+![アイテムを作成4](./create-billing-item-4.png)
+
+### 定期購入の作成
+
+[定期購入の作成](https://support.google.com/googleplay/android-developer/answer/140504?hl=ja&ref_topic=3452890) をもとに定期購入を作る。
+ただし、 Google Play Console がアップデートされたことに日本語ドキュメントは追従できていない。
+
+#### アプリの設定
+
+TBD: 実装次第追記
+
+#### Play の設定
+
+Google Play Console の収益化 > 商品 > 定期購入を表示する。
+「定期購入を作成」を押下する。
+
+![定期購入を作成1](./create-billing-subscription-1.png)
+
+それから必要な項目を埋める。
+
+![定期購入を作成2](./create-billing-subscription-2.png)
+![定期購入を作成3](./create-billing-subscription-3.png)
+
+作成後、リストに反映される。
+
+![定期購入を作成4](./create-billing-subscription-4.png)
+
+### その他
+
+管理対象アイテムも定期購入も、有効・無効という設定がある。
+編集ページから切り替えることができる。
