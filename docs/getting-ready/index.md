@@ -110,3 +110,8 @@ Google Play Console の収益化 > 商品 > 定期購入を表示する。
 
 管理対象アイテムも定期購入も、有効・無効という設定がある。
 編集ページから切り替えることができる。
+
+## Google Play Developer API を構成する
+
+[Google Play Developer API](https://developers.google.com/android-publisher/getting_started) を利用して Purchases.products や Purchases.subscriptions といった課金周りの操作をAPI経由でできるようだ。
+詳しくは実装後。
