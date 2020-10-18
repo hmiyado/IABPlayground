@@ -10,13 +10,13 @@ Google Play Console で支払いプロファイルを設定する。
 「お支払いプロファイルを作成」を押すと、設定画面に遷移する。
 
 ![支払いプロファイルの設定画面1](./create-billing-profile-2.png)
-![支払いプロファイルの設定画面1](./create-billing-profile-3.png)
-![支払いプロファイルの設定画面1](./create-billing-profile-4.png)
+![支払いプロファイルの設定画面2](./create-billing-profile-3.png)
+![支払いプロファイルの設定画面3](./create-billing-profile-4.png)
 
 個人のお支払いプロファイルに紐付けるかこのために新しく作るかや、会社なのか個人なのかといった設定項目がある。
 
 設定を完了すると以下の画面に遷移する。
-![支払いプロファイルの設定画面1](./create-billing-profile-5.png)
+![支払いプロファイルの設定画面4](./create-billing-profile-5.png)
 
 
 ## Google Play Console で請求関連の機能を有効にする
@@ -27,7 +27,7 @@ Google Play Console で支払いプロファイルを設定する。
 dependencies {
     def billing_version = "3.0.0"
 
-    implementation 'com.android.billingclient:billing-ktx:$billing_version'
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
 }
 ```
 
@@ -53,3 +53,30 @@ $ ./gradlew bundleRelease
 #### アプリ価格の設定
 
 無料を指定するか、適当な有料の値を指定するかする。
+
+## アイテムを作成して構成する
+
+### 管理対象アイテムの作成
+
+[管理対象アイテムの作成](https://support.google.com/googleplay/android-developer/answer/1153481) をもとにアイテムを作る。
+ただし、Google Play Console がアップデートされたことに日本語ドキュメントは追従できていない。
+
+#### アプリの設定
+
+Android Manifest に `com.android.vending.BILLING` が必要。
+
+#### Play の設定
+
+Google Play Console の 収益化 > 商品 > アプリ内サービスを表示する。
+右上あたりのメニューから「アイテムを作成」を押下する。
+
+![アイテムを作成](./create-billing-item-1.png)
+
+それから必要な項目を埋める。
+
+![アイテムを作成1](./create-billing-item-2.png)
+![アイテムを作成2](./create-billing-item-3.png)
+
+作成後、リストに反映される。
+
+![アイテムを作成後](./create-billing-item-4.png)
