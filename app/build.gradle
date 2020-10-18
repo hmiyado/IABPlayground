@@ -2,7 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+Properties properties = new Properties()
+def propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.newDataInputStream())
+}
+
 android {
+    signingConfigs {
+        release {
+            storePassword properties.getProperty('signing.release.storepassword')
+            storeFile file(properties.getProperty('signing.release.storeFilePath'))
+            keyAlias properties.getProperty('signing.release.keyalias')
+            keyPassword properties.getProperty('signing.release.keypassword')
+        }
+    }
     compileSdkVersion 30
 
     defaultConfig {
@@ -19,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -29,6 +44,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    def billing_version = "3.0.0"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
