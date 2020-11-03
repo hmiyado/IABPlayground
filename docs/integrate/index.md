@@ -52,6 +52,15 @@ BillingClient.launchBillingFlow(Activity, BillingFlowParams) を呼び出す。
 メールに記載されている Order number と Purchase.orderId が一致する。
 Order number をインデックスとして払い戻し対応等を行う。
 
+## 購入を処理する
+
+ユーザーが購入した後に、アプリケーション（＋サーバー）で実際に購入を処理する必要がある。
+そうしなければ、購入はキャンセルされる。
+
+購入を処理するプロセスは消費不可アイテムの購入、消費可能アイテムの購入、定期購入の3つのパターンがある。
+
+消費可能アイテムの場合、 BillingClient.consumeAsync(ConsumeParams) を呼び出す。
+
 ## Appendix
 
 - [公式サンプルGitHubプロジェクト](https://github.com/android/play-billing-samples)

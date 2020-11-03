@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.ConsumeParams
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -68,13 +69,26 @@ class MainActivity : AppCompatActivity() {
         viewModel
             .viewModelScope
             .launch {
-                purchaseUpdateListener.purchaseUpdated.collect { (billingResult, purchaseList) ->
-                    binding.textView.text = """
-                        ${billingResult.responseCode()}
-                        ${purchaseList.joinToString()}
-                        ${binding.textView.text}
-                    """.trimIndent()
-                }
+                purchaseUpdateListener.purchaseUpdated
+                    .collect { (billingResult, purchaseList) ->
+                        binding.textView.text = """
+                            ${billingResult.responseCode()}
+                            ${purchaseList.joinToString()}
+                            ${binding.textView.text}
+                        """.trimIndent()
+
+                        val unAcknowledgedPurchase =
+                            purchaseList.firstOrNull { !it.isAcknowledged } ?: return@collect
+                        val params = ConsumeParams.newBuilder()
+                            .setPurchaseToken(unAcknowledgedPurchase.purchaseToken)
+                            .build()
+                        val (consumeResult, outToken) = billingClient.consume(params)
+                        binding.textView.text = """
+                            ${consumeResult.responseCode()}
+                            $outToken
+                            ${binding.textView.text}
+                        """.trimIndent()
+                    }
             }
             .start()
 
