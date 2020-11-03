@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingFlowParams
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by lazy {
@@ -42,7 +41,9 @@ class MainActivity : AppCompatActivity() {
                 billingClient.endConnection()
                 state = billingClient.startConnection()
             }
-            val (inAppBillingResult, inAppSkuDetailsList) = querySkuDetails(IABPlaygroundSku.InAppSku)
+            val (inAppBillingResult, inAppSkuDetailsList) = billingClient.querySkuDetails(
+                IABPlaygroundSku.InAppSku
+            )
             val inAppDescription =
                 if (inAppBillingResult.responseCode() == BillingResponseCode.OK) {
                     inAppSkuDetailsList.joinToString()
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                     inAppBillingResult.debugMessage
                 }
 
-            val (subscriptionBillingResult, subscriptionSkuDetailsList) = querySkuDetails(
+            val (subscriptionBillingResult, subscriptionSkuDetailsList) = billingClient.querySkuDetails(
                 IABPlaygroundSku.SubscriptionSku
             )
             val subscriptionDescription =
@@ -79,21 +80,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonStartBillingItem.setOnClickListener {
             viewModel.viewModelScope.launch {
-                val (_, skuDetails) = querySkuDetails(IABPlaygroundSku.InAppSku)
+                val (_, skuDetails) = billingClient.querySkuDetails(IABPlaygroundSku.InAppSku)
                 val flowParams = BillingFlowParams.newBuilder()
                     .setSkuDetails(skuDetails.first())
                     .build()
                 val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
                 Logger.debug("after billing ${result.responseCode()}")
             }.start()
-        }
-    }
-
-    private suspend fun querySkuDetails(params: SkuDetailsParams): Pair<BillingResult, List<SkuDetails>> {
-        return suspendCoroutine {
-            billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-                it.resume(billingResult to (skuDetailsList ?: emptyList()))
-            }
         }
     }
 
