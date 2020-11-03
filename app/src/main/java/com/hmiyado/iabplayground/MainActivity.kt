@@ -1,7 +1,6 @@
 package com.hmiyado.iabplayground
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -43,14 +42,26 @@ class MainActivity : AppCompatActivity() {
                 billingClient.endConnection()
                 state = billingClient.startConnection()
             }
-            val (billingResult, skuDetailsList) = querySkuDetails()
-            Log.d("", "onSkuDetailsResponse: ${billingResult.responseCode()}, $skuDetailsList")
-            binding.textView.text =
-                if (billingResult.responseCode() == BillingResponseCode.OK) {
-                    skuDetailsList.joinToString()
+            val (inAppBillingResult, inAppSkuDetailsList) = querySkuDetails(IABPlaygroundSku.InAppSku)
+            val inAppDescription =
+                if (inAppBillingResult.responseCode() == BillingResponseCode.OK) {
+                    inAppSkuDetailsList.joinToString()
                 } else {
-                    billingResult.debugMessage
+                    inAppBillingResult.debugMessage
                 }
+
+            val (subscriptionBillingResult, subscriptionSkuDetailsList) = querySkuDetails(
+                IABPlaygroundSku.SubscriptionSku
+            )
+            val subscriptionDescription =
+                if (subscriptionBillingResult.responseCode() == BillingResponseCode.OK) {
+                    subscriptionSkuDetailsList.joinToString()
+                } else {
+                    subscriptionBillingResult.debugMessage
+                }
+
+
+            binding.textView.text = "$inAppDescription \n $subscriptionDescription"
         }.start()
 //
 //        binding.buttonStartBillingItem.setOnClickListener {
@@ -65,12 +76,9 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    private suspend fun querySkuDetails(): Pair<BillingResult, List<SkuDetails>> {
-        val skuList = listOf("iabplayground_item_1")
-        val params = SkuDetailsParams.newBuilder()
-        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+    private suspend fun querySkuDetails(params: SkuDetailsParams): Pair<BillingResult, List<SkuDetails>> {
         return suspendCoroutine {
-            billingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
+            billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
                 it.resume(billingResult to (skuDetailsList ?: emptyList()))
             }
         }
