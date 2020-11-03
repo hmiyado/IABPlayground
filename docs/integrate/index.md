@@ -47,6 +47,11 @@ BillingClient.launchBillingFlow(Activity, BillingFlowParams) を呼び出す。
 
 ![購入フローを起動する](./launch-the-purchase-flow.png)
 
+テスト購入では実際には課金されない。
+
+メールに記載されている Order number と Purchase.orderId が一致する。
+Order number をインデックスとして払い戻し対応等を行う。
+
 ## Appendix
 
 - [公式サンプルGitHubプロジェクト](https://github.com/android/play-billing-samples)

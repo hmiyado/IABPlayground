@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.*
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -18,8 +19,8 @@ class MainActivity : AppCompatActivity() {
             .create(MainViewModel::class.java)
     }
 
-    private val purchaseUpdateListener = PurchasesUpdatedListener { billingResult, mutableList ->
-        Logger.debug("onPurchaseUpdated: ${billingResult.responseCode()}")
+    private val purchaseUpdateListener by lazy {
+        FlowablePurchaseUpdateListener(viewModel.viewModelScope)
     }
 
     private val billingClient by lazy {
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
-
 
         viewModel.viewModelScope.launch {
             var state = billingClient.startConnection()
@@ -63,6 +63,19 @@ class MainActivity : AppCompatActivity() {
 
             binding.textView.text = "$inAppDescription \n $subscriptionDescription"
         }.start()
+
+        viewModel
+            .viewModelScope
+            .launch {
+                purchaseUpdateListener.purchaseUpdated.collect { (billingResult, purchaseList) ->
+                    binding.textView.text = """
+                        ${billingResult.responseCode()}
+                        ${purchaseList.joinToString()}
+                        ${binding.textView.text}
+                    """.trimIndent()
+                }
+            }
+            .start()
 
         binding.buttonStartBillingItem.setOnClickListener {
             viewModel.viewModelScope.launch {
