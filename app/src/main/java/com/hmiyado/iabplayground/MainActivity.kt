@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.*
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -29,33 +30,21 @@ class MainActivity : AppCompatActivity() {
             .build()
     }
 
-    private val billingClientStateListener: BillingClientStateListener =
-        object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
-                Logger.debug("onBillingServiceDisconnected")
-                billingClient.endConnection()
-                billingClient.startConnection(this)
-            }
-
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                Logger.debug("onBillingSetupFinished: ${billingResult.responseCode()}")
-            }
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        billingClient.startConnection(billingClientStateListener)
 
         viewModel.viewModelScope.launch {
-            while (!billingClient.isReady) {
+            var state = billingClient.startConnection()
+            while (state == BillingClientState.BillingServiceDisconnected) {
                 delay(500)
-                Log.d("","waiting billing client is ready")
+                billingClient.endConnection()
+                state = billingClient.startConnection()
             }
             val (billingResult, skuDetailsList) = querySkuDetails()
-            Log.d("","onSkuDetailsResponse: ${billingResult.responseCode()}, $skuDetailsList")
+            Log.d("", "onSkuDetailsResponse: ${billingResult.responseCode()}, $skuDetailsList")
             binding.textView.text =
                 if (billingResult.responseCode() == BillingResponseCode.OK) {
                     skuDetailsList.joinToString()
