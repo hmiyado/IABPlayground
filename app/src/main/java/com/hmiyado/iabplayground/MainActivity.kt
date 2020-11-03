@@ -63,17 +63,17 @@ class MainActivity : AppCompatActivity() {
 
             binding.textView.text = "$inAppDescription \n $subscriptionDescription"
         }.start()
-//
-//        binding.buttonStartBillingItem.setOnClickListener {
-//            viewModel.viewModelScope.launch {
-//                val skuDetails = querySkuDetails()
-//                val flowParams = BillingFlowParams.newBuilder()
-//                    .setSkuDetails(skuDetails.first())
-//                    .build()
-//                val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
-//                Logger.debug("after billing ${result.responseCode()}")
-//            }.start()
-//        }
+
+        binding.buttonStartBillingItem.setOnClickListener {
+            viewModel.viewModelScope.launch {
+                val (_, skuDetails) = querySkuDetails(IABPlaygroundSku.InAppSku)
+                val flowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetails.first())
+                    .build()
+                val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
+                Logger.debug("after billing ${result.responseCode()}")
+            }.start()
+        }
     }
 
     private suspend fun querySkuDetails(params: SkuDetailsParams): Pair<BillingResult, List<SkuDetails>> {
