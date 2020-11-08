@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.ConsumeParams
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collect
@@ -40,25 +40,14 @@ class MainActivity : AppCompatActivity() {
             val (inAppBillingResult, inAppSkuDetailsList) = billingClient.querySkuDetails(
                 IABPlaygroundSku.InAppSku
             )
-            val inAppDescription =
-                if (inAppBillingResult.responseCode() == BillingResponseCode.OK) {
-                    inAppSkuDetailsList.joinToString()
-                } else {
-                    inAppBillingResult.debugMessage
-                }
 
             val (subscriptionBillingResult, subscriptionSkuDetailsList) = billingClient.querySkuDetails(
                 IABPlaygroundSku.SubscriptionSku
             )
-            val subscriptionDescription =
-                if (subscriptionBillingResult.responseCode() == BillingResponseCode.OK) {
-                    subscriptionSkuDetailsList.joinToString()
-                } else {
-                    subscriptionBillingResult.debugMessage
-                }
 
-
-            binding.textView.text = "$inAppDescription \n $subscriptionDescription"
+            binding.purchaseList.adapter =
+                PurchaseListItemAdapter(inAppSkuDetailsList + subscriptionSkuDetailsList)
+            binding.purchaseList.layoutManager = LinearLayoutManager(baseContext)
         }.start()
 
         viewModel
@@ -87,16 +76,16 @@ class MainActivity : AppCompatActivity() {
             }
             .start()
 
-        binding.buttonStartBillingItem.setOnClickListener {
-            viewModel.viewModelScope.launch {
-                val (_, skuDetails) = billingClient.querySkuDetails(IABPlaygroundSku.InAppSku)
-                val flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(skuDetails.first())
-                    .build()
-                val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
-                Logger.debug("after billing ${result.responseCode()}")
-            }.start()
-        }
+//        binding.buttonStartBillingItem.setOnClickListener {
+//            viewModel.viewModelScope.launch {
+//                val (_, skuDetails) = billingClient.querySkuDetails(IABPlaygroundSku.InAppSku)
+//                val flowParams = BillingFlowParams.newBuilder()
+//                    .setSkuDetails(skuDetails.first())
+//                    .build()
+//                val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
+//                Logger.debug("after billing ${result.responseCode()}")
+//            }.start()
+//        }
     }
 
     override fun onDestroy() {
