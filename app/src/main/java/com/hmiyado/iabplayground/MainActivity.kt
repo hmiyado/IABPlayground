@@ -9,7 +9,6 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.ConsumeParams
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -36,12 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.viewModelScope.launch {
-            var state = billingClient.startConnection()
-            while (state == BillingClientState.BillingServiceDisconnected) {
-                delay(500)
-                billingClient.endConnection()
-                state = billingClient.startConnection()
-            }
+            billingClient.startConnection()
+
             val (inAppBillingResult, inAppSkuDetailsList) = billingClient.querySkuDetails(
                 IABPlaygroundSku.InAppSku
             )
