@@ -73,17 +73,18 @@ class MainActivity : AppCompatActivity() {
                             ${binding.textView.text}
                         """.trimIndent()
 
-                        val unAcknowledgedPurchase =
-                            purchaseList.firstOrNull { !it.isAcknowledged } ?: return@collect
-                        val params = ConsumeParams.newBuilder()
-                            .setPurchaseToken(unAcknowledgedPurchase.purchaseToken)
-                            .build()
-                        val (consumeResult, outToken) = billingClient.consume(params)
-                        binding.textView.text = """
-                            ${consumeResult.responseCode()}
-                            $outToken
-                            ${binding.textView.text}
-                        """.trimIndent()
+                        val purchase = purchaseList.firstOrNull() ?: return@collect
+                        if (IABPlaygroundSku.isConsumable(purchase)) {
+                            val params = ConsumeParams.newBuilder()
+                                .setPurchaseToken(purchase.purchaseToken)
+                                .build()
+                            val (consumeResult, outToken) = billingClient.consume(params)
+                            binding.textView.text = """
+                                ${consumeResult.responseCode()}
+                                $outToken
+                                ${binding.textView.text}
+                            """.trimIndent()
+                        }
                     }
             }
             .start()

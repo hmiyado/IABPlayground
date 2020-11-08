@@ -59,7 +59,8 @@ Order number をインデックスとして払い戻し対応等を行う。
 
 購入を処理するプロセスは消費不可アイテムの購入、消費可能アイテムの購入、定期購入の3つのパターンがある。
 
-消費可能アイテムの場合、 BillingClient.consumeAsync(ConsumeParams) を呼び出す。
+- 消費可能アイテムの場合、 BillingClient.consumeAsync(ConsumeParams,ConsumeResponseListener) を呼び出す。
+- 消費不可能アイテムまたは定期購入アイテムの場合、 BillingClient.acknowledgePurchase(AcknowledgePurchaseParams,AcknowledgePurchaseResponseListener) を呼び出す。
 
 ## Appendix
 
