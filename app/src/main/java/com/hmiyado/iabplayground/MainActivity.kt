@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.ConsumeParams
 import com.hmiyado.iabplayground.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collect
@@ -45,9 +46,20 @@ class MainActivity : AppCompatActivity() {
                 IABPlaygroundSku.SubscriptionSku
             )
 
-            binding.purchaseList.adapter =
+            val purchaseListItemAdapter =
                 PurchaseListItemAdapter(inAppSkuDetailsList + subscriptionSkuDetailsList)
+            binding.purchaseList.adapter =
+                purchaseListItemAdapter
             binding.purchaseList.layoutManager = LinearLayoutManager(baseContext)
+            purchaseListItemAdapter.onClick
+                .collect {
+                    val flowParams = BillingFlowParams.newBuilder()
+                        .setSkuDetails(it)
+                        .build()
+                    val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
+                    Logger.debug("after billing ${result.responseCode()}")
+
+                }
         }.start()
 
         viewModel
@@ -75,17 +87,6 @@ class MainActivity : AppCompatActivity() {
                     }
             }
             .start()
-
-//        binding.buttonStartBillingItem.setOnClickListener {
-//            viewModel.viewModelScope.launch {
-//                val (_, skuDetails) = billingClient.querySkuDetails(IABPlaygroundSku.InAppSku)
-//                val flowParams = BillingFlowParams.newBuilder()
-//                    .setSkuDetails(skuDetails.first())
-//                    .build()
-//                val result = billingClient.launchBillingFlow(this@MainActivity, flowParams)
-//                Logger.debug("after billing ${result.responseCode()}")
-//            }.start()
-//        }
     }
 
     override fun onDestroy() {
