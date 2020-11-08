@@ -15,9 +15,17 @@ suspend fun BillingClient.querySkuDetails(params: SkuDetailsParams): Pair<Billin
 typealias OutToken = String
 
 suspend fun BillingClient.consume(params: ConsumeParams): Pair<BillingResult, OutToken> {
-    return suspendCoroutine {
+    return suspendCoroutine { continuation ->
         consumeAsync(params) { billingResult, outToken ->
-            it.resume(billingResult to outToken)
+            continuation.resume(billingResult to outToken)
+        }
+    }
+}
+
+suspend fun BillingClient.acknowledge(params: AcknowledgePurchaseParams): BillingResult {
+    return suspendCoroutine { continuation ->
+        acknowledgePurchase(params) { billingResult ->
+            continuation.resume(billingResult)
         }
     }
 }

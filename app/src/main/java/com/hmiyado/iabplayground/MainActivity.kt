@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.ConsumeParams
@@ -78,10 +79,21 @@ class MainActivity : AppCompatActivity() {
                             val params = ConsumeParams.newBuilder()
                                 .setPurchaseToken(purchase.purchaseToken)
                                 .build()
-                            val (consumeResult, outToken) = billingClient.consume(params)
+                            val (result, outToken) = billingClient.consume(params)
                             binding.textView.text = """
-                                ${consumeResult.responseCode()}
+                                ${result.responseCode()}
                                 $outToken
+                                ${binding.textView.text}
+                            """.trimIndent()
+                        }
+
+                        if (IABPlaygroundSku.isAcknowledgeEnabled(purchase)) {
+                            val params = AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.purchaseToken)
+                                .build()
+                            val result = billingClient.acknowledge(params)
+                            binding.textView.text = """
+                                ${result.responseCode()}
                                 ${binding.textView.text}
                             """.trimIndent()
                         }
