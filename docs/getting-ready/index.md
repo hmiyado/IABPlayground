@@ -5,6 +5,7 @@
 Google Play Console で支払いプロファイルを設定する。
 
 まず、プロファイル作成直前の画面が以下。
+
 <img src="./account/create-billing-profile-1.png" alt="支払いプロファイルの作成" width="480" />
 
 「お支払いプロファイルを作成」を押すと、設定画面に遷移する。
@@ -16,8 +17,8 @@ Google Play Console で支払いプロファイルを設定する。
 個人のお支払いプロファイルに紐付けるかこのために新しく作るかや、会社なのか個人なのかといった設定項目がある。
 
 設定を完了すると以下の画面に遷移する。
-<img alt="支払いプロファイルの設定画面4" src="./account/create-billing-profile-5.png" width="480" />
 
+<img alt="支払いプロファイルの設定画面4" src="./account/create-billing-profile-5.png" width="480" />
 
 ## Google Play Console で請求関連の機能を有効にする
 
