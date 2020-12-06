@@ -115,3 +115,11 @@ Google Play Console の収益化 > 商品 > 定期購入を表示する。
 
 [Google Play Developer API](https://developers.google.com/android-publisher/getting_started) を利用して Purchases.products や Purchases.subscriptions といった課金周りの操作をAPI経由でできるようだ。
 詳しくは実装後。
+
+## リアルタイムデベロッパー通知を構成する
+
+### Cloud Pub/Subを設定する
+
+GCP プロジェクトを新しく作る（または既存のものを利用する）。
+
+![プロジェクトを作成](./rtdn/create-project.png)
