@@ -71,16 +71,16 @@ Android Manifest に `com.android.vending.BILLING` が必要。
 Google Play Console の 収益化 > 商品 > アプリ内サービスを表示する。
 右上あたりのメニューから「アイテムを作成」を押下する。
 
-![アイテムを作成1](./products/create-billing-item-1.png)
+<img alt="アイテムを作成1" src="./products/create-billing-item-1.png" width="480" />
 
 それから必要な項目を埋める。
 
-![アイテムを作成2](./products/create-billing-item-2.png)
-![アイテムを作成3](./products/create-billing-item-3.png)
+<img alt="アイテムを作成2" src="./products/create-billing-item-2.png" width="480" />
+<img alt="アイテムを作成3" src="./products/create-billing-item-3.png" width="480" />
 
 作成後、リストに反映される。
 
-![アイテムを作成4](./products/create-billing-item-4.png)
+<img alt="アイテムを作成4" src="./products/create-billing-item-4.png" width="480" />
 
 ### 定期購入の作成
 
@@ -96,16 +96,16 @@ TBD: 実装次第追記
 Google Play Console の収益化 > 商品 > 定期購入を表示する。
 「定期購入を作成」を押下する。
 
-![定期購入を作成1](./products/create-billing-subscription-1.png)
+<img alt="定期購入を作成1" src="./products/create-billing-subscription-1.png" width="480" />
 
 それから必要な項目を埋める。
 
-![定期購入を作成2](./products/create-billing-subscription-2.png)
-![定期購入を作成3](./products/create-billing-subscription-3.png)
+<img alt="定期購入を作成2" src="./products/create-billing-subscription-2.png" width="480" />
+<img alt="定期購入を作成3" src="./products/create-billing-subscription-3.png" width="480" />
 
 作成後、リストに反映される。
 
-![定期購入を作成4](./products/create-billing-subscription-4.png)
+<img alt="定期購入を作成4" src="./products/create-billing-subscription-4.png" width="480" />
 
 ### その他
 
