@@ -2,6 +2,7 @@ package com.hmiyado.iabplayground
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -68,11 +69,13 @@ class MainActivity : AppCompatActivity() {
             .launch {
                 purchaseUpdateListener.purchaseUpdated
                     .collect { (billingResult, purchaseList) ->
-                        binding.textView.text = """
-                            ${billingResult.responseCode()}
-                            ${purchaseList.joinToString()}
-                            ${binding.textView.text}
+                        binding.textView.appendHead(
+                            """
+                        # PurchaseUpdated #
+                        ResponseCode: ${billingResult.responseCode()}
+                        PurchaseList: ${purchaseList.joinToString()}
                         """.trimIndent()
+                        )
 
                         val purchase = purchaseList.firstOrNull() ?: return@collect
                         if (IABPlaygroundSku.isConsumable(purchase)) {
@@ -80,11 +83,13 @@ class MainActivity : AppCompatActivity() {
                                 .setPurchaseToken(purchase.purchaseToken)
                                 .build()
                             val (result, outToken) = billingClient.consume(params)
-                            binding.textView.text = """
-                                ${result.responseCode()}
-                                $outToken
-                                ${binding.textView.text}
+                            binding.textView.appendHead(
+                                """
+                            # Consumed #
+                            ResponseCode: ${result.responseCode()}
+                            OutToken: $outToken
                             """.trimIndent()
+                            )
                         }
 
                         if (IABPlaygroundSku.isAcknowledgeEnabled(purchase)) {
@@ -92,14 +97,20 @@ class MainActivity : AppCompatActivity() {
                                 .setPurchaseToken(purchase.purchaseToken)
                                 .build()
                             val result = billingClient.acknowledge(params)
-                            binding.textView.text = """
-                                ${result.responseCode()}
-                                ${binding.textView.text}
+                            binding.textView.appendHead(
+                                """
+                            # Acknowledged #
+                            ResponseCode: ${result.responseCode().toString().trimIndent()}
                             """.trimIndent()
+                            )
                         }
                     }
             }
             .start()
+    }
+
+    private fun TextView.appendHead(text: CharSequence) {
+        this.text = text.toString() + "\n" + this.text
     }
 
     override fun onDestroy() {
