@@ -132,3 +132,15 @@ GCP プロジェクト内でトピックを作成する。
 
 ![トピックを作成1](./rtdn/create-topic1.png)
 ![トピックを作成2](./rtdn/create-topic2.png)
+
+### トピックへのパブリッシュ権限を付与する
+
+先程作成したトピックの権限を表示する。
+![パブリッシュ権限を付与1](./rtdn/add-publish-permission1.png)
+
+トピックに `google-play-developer-notifications@system.gserviceaccount.com` というサービスアカウントを追加する。
+ロールは `Pub/Subパブリッシャー` とする。
+![パブリッシュ権限を付与2](./rtdn/add-publish-permission2.png)
+
+「保存」して追加されていることを確認する。
+![パブリッシュ権限を付与3](./rtdn/add-publish-permission3.png)
