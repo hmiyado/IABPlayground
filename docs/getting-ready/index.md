@@ -5,19 +5,20 @@
 Google Play Console で支払いプロファイルを設定する。
 
 まず、プロファイル作成直前の画面が以下。
-![支払いプロファイルの作成](./create-billing-profile-1.png)
+
+<img src="./account/create-billing-profile-1.png" alt="支払いプロファイルの作成" width="480" />
 
 「お支払いプロファイルを作成」を押すと、設定画面に遷移する。
 
-![支払いプロファイルの設定画面1](./create-billing-profile-2.png)
-![支払いプロファイルの設定画面2](./create-billing-profile-3.png)
-![支払いプロファイルの設定画面3](./create-billing-profile-4.png)
+<img alt="支払いプロファイルの設定画面1" src="./account/create-billing-profile-2.png" width="480" />
+<img alt="支払いプロファイルの設定画面2" src="./account/create-billing-profile-3.png" width="480" />
+<img alt="支払いプロファイルの設定画面3" src="./account/create-billing-profile-4.png" width="480" />
 
 個人のお支払いプロファイルに紐付けるかこのために新しく作るかや、会社なのか個人なのかといった設定項目がある。
 
 設定を完了すると以下の画面に遷移する。
-![支払いプロファイルの設定画面4](./create-billing-profile-5.png)
 
+<img alt="支払いプロファイルの設定画面4" src="./account/create-billing-profile-5.png" width="480" />
 
 ## Google Play Console で請求関連の機能を有効にする
 
@@ -70,16 +71,16 @@ Android Manifest に `com.android.vending.BILLING` が必要。
 Google Play Console の 収益化 > 商品 > アプリ内サービスを表示する。
 右上あたりのメニューから「アイテムを作成」を押下する。
 
-![アイテムを作成1](./create-billing-item-1.png)
+![アイテムを作成1](./products/create-billing-item-1.png)
 
 それから必要な項目を埋める。
 
-![アイテムを作成2](./create-billing-item-2.png)
-![アイテムを作成3](./create-billing-item-3.png)
+![アイテムを作成2](./products/create-billing-item-2.png)
+![アイテムを作成3](./products/create-billing-item-3.png)
 
 作成後、リストに反映される。
 
-![アイテムを作成4](./create-billing-item-4.png)
+![アイテムを作成4](./products/create-billing-item-4.png)
 
 ### 定期購入の作成
 
@@ -95,16 +96,16 @@ TBD: 実装次第追記
 Google Play Console の収益化 > 商品 > 定期購入を表示する。
 「定期購入を作成」を押下する。
 
-![定期購入を作成1](./create-billing-subscription-1.png)
+![定期購入を作成1](./products/create-billing-subscription-1.png)
 
 それから必要な項目を埋める。
 
-![定期購入を作成2](./create-billing-subscription-2.png)
-![定期購入を作成3](./create-billing-subscription-3.png)
+![定期購入を作成2](./products/create-billing-subscription-2.png)
+![定期購入を作成3](./products/create-billing-subscription-3.png)
 
 作成後、リストに反映される。
 
-![定期購入を作成4](./create-billing-subscription-4.png)
+![定期購入を作成4](./products/create-billing-subscription-4.png)
 
 ### その他
 
