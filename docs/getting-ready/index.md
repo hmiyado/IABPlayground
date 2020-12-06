@@ -115,3 +115,49 @@ Google Play Console の収益化 > 商品 > 定期購入を表示する。
 
 [Google Play Developer API](https://developers.google.com/android-publisher/getting_started) を利用して Purchases.products や Purchases.subscriptions といった課金周りの操作をAPI経由でできるようだ。
 詳しくは実装後。
+
+## リアルタイムデベロッパー通知を構成する
+
+### Cloud Pub/Subを設定する
+
+GCP プロジェクトを新しく作る（または既存のものを利用する）。
+
+![プロジェクトを作成](./rtdn/create-project.png)
+
+### トピックを作成する
+
+GCP プロジェクト内でトピックを作成する。
+
+（要確認）おそらく、アプリに対して1つトピックがあればよさそう。
+
+![トピックを作成1](./rtdn/create-topic1.png)
+![トピックを作成2](./rtdn/create-topic2.png)
+
+### トピックへのパブリッシュ権限を付与する
+
+先程作成したトピックの権限を表示する。
+![パブリッシュ権限を付与1](./rtdn/add-publish-permission1.png)
+
+トピックに `google-play-developer-notifications@system.gserviceaccount.com` というサービスアカウントを追加する。
+ロールは `Pub/Subパブリッシャー` とする。
+![パブリッシュ権限を付与2](./rtdn/add-publish-permission2.png)
+
+「保存」して追加されていることを確認する。
+![パブリッシュ権限を付与3](./rtdn/add-publish-permission3.png)
+
+### アプリでリアルタイムデベロッパー通知を有効にする
+
+Google Play Console から GCP への繋ぎ込みを行う。
+
+Google Play Console の収益化＞収益化のセットアップを開く。
+表示される画面に先程作成したトピックのトピック名を入力する。
+
+![リアルタイムデベロッパー通知を有効にする1](./rtdn/enable-rtdn1.png)
+
+「テスト通知を送信する」を押下すると、正しいトピックに送信できているかどうかがわかる。
+
+|成功例|失敗例|
+|:--|:--|
+|![リアルタイムデベロッパー通知を有効にする2成功](./rtdn/enable-rtdn2-success.png)|![リアルタイムデベロッパー通知を有効にする2失敗](./rtdn/enable-rtdn2-fail.png)|
+
+成功したら「変更を保存」を押下する。
